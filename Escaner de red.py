@@ -50,7 +50,7 @@ def quieres_parar():
         quieres_parar = True
         exit()
     elif quieres_parar == "n":
-        quieres_parar == False
+        quieres_parar = False
         print("")
     else:
         print("")
