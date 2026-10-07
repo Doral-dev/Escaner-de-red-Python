@@ -2,15 +2,12 @@
 Pasos para ejecutar y usar esta herramienta:
 
 
-1. Clona o descarga el repositorio en tu máquina y sitúate en la carpeta del proyecto ejecutando estos comandos:
+1. Clona o descarga el repositorio en tu máquina:
 
 ```
 git clone https://github.com/Doral-Ciberseguridad/Escaner-Red-Auditoria-Python.git
 ```
 
-```
-cd Escaner-Red-Auditoria-Python
-```
 
 
 2. Instala las dependencias necesarias ejecutando en tu terminal:
