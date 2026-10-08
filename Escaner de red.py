@@ -1,8 +1,6 @@
 
 
-
-
-
+# Imprimo el titulo en pantalla
 
 print(r"""
 
@@ -16,6 +14,7 @@ print(r"""
 
 
 
+# Importo las librerias de python necesarias
 
 import socket
 import subprocess
@@ -26,12 +25,13 @@ import socket
 
 
 
-# Variables globales
+# Defino esta variable global. Obtiene el nombre del host.
 global nombre_host
 nombre_host = socket.gethostname()
 
 
 
+# Creo una funcion para automatizar la pregunta al usuario sobre si quiere detener el programa. Esto lo usare más adelante varias veces. Tenerlo en una funcion me simplifica su uso.
 def quieres_parar():
     print("")
     quieres_parar = str(input("Quieres detener este programa? (s/n) -->"))
@@ -51,10 +51,11 @@ def quieres_parar():
 
 parar = False
 
+# Mientras parar == False el programa ejecutará el bucle while infinitamente hasta que parar == True.
 while parar == False:
+  # Muestro las opciones al usuario
     print("")
     print("Esta herramienta cuenta con las siguientes opciones:")
-
     opciones = [
         "1.Obtener información de red del host",
         "2.Escanear puertos y servicios con nmap",
@@ -64,23 +65,34 @@ while parar == False:
         "6.Banner grabbing Services",
     ]
 
+   # Para cada una de las opciones
     for opcion in opciones:
         print(opcion)
 
+    # Le pido al usuario que elija una de ellas
     elegir_opcion = int(input("Elige una (1,2,3,4,5,6) --> "))
     print("")
+  
+   # Uso la funcionalidad match para ejecutar un bloque de código según la opcion que elija el usuario
     match elegir_opcion:
+
+        # 1.Obtener informacion de red del host
         case 1:
             print("Recopilando información de red del host...")
             time.sleep(3)
             print(f"Nombre del host: {nombre_host}")
             print("")
             print("Ipconfig:")
+            # Ejecuto un ipconfig con powershell
             ipconfig_resultado = subprocess.run(["powershell.exe", "ipconfig"])
+
+
+            # Defino una lista de puertos
             puertos = [21, 22, 80, 443, 3306, 8080]
             print("")
             print("")
             print("Consultar la información de direcciones, familias de red e IPs asociadas a ese host a nivel de sistema/DNS: ")
+            # Para cada uno de los puertos obtengo informacion
             for puerto in puertos:
                 print("")
                 print(f"Puerto {puerto} :")
@@ -89,7 +101,7 @@ while parar == False:
             quieres_parar()
             
 
-            
+        # 2.Escanear puertos y servicios con nmap
         case 2:
             print("Comenzando el escaneo de puertos de nmap...")
             time.sleep(3)
@@ -104,7 +116,7 @@ while parar == False:
             quieres_parar()
 
 
-
+        # 3.Mapeo de rutas con traceroute
         case 3:
             print("Testeando las distintas rutas de red con traceroute...")
             time.sleep(3)
@@ -113,7 +125,7 @@ while parar == False:
             quieres_parar()
 
 
-
+        # 4.Descubrimiento de hosts en la red (ping sweeps)
         case 4:
             print("4.Descubriendo hosts en la red...")
             time.sleep(3)
@@ -121,7 +133,8 @@ while parar == False:
             print(descubrir_ips)
             quieres_parar()
 
-
+  
+        # 5.Detección de sistemas operativos en red
         case 5:
             print("Detectando sistemas operativos en red con nmap...")
             time.sleep(3)
@@ -136,6 +149,7 @@ while parar == False:
             quieres_parar()
 
 
+        # 6.Banner grabbing Services
         case 6:
             print("Iniciando Banner Grabbing...")
             time.sleep(3)
