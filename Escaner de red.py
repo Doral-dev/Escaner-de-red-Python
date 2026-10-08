@@ -1,5 +1,3 @@
-
-
 # Imprimo el titulo en pantalla
 
 print(r"""
@@ -33,12 +31,16 @@ nombre_host = socket.gethostname()
 
 # Creo una funcion para automatizar la pregunta al usuario sobre si quiere detener el programa. Esto lo usare más adelante varias veces. Tenerlo en una funcion me simplifica su uso.
 def quieres_parar():
+    # Muestro un salto de línea en mi consola
     print("")
+    # Pido al usuario que decida si quiere detener el flujo
     quieres_parar = str(input("Quieres detener este programa? (s/n) -->"))
     print("")
+    # Evalúo si decido salir de la ejecución
     if quieres_parar == "s":
         quieres_parar = True
         exit()
+    # Evalúo si decido continuar con el programa
     elif quieres_parar == "n":
         quieres_parar = False
         print("")
@@ -96,6 +98,7 @@ while parar == False:
             for puerto in puertos:
                 print("")
                 print(f"Puerto {puerto} :")
+                # Consulto la información de red para el puerto actual
                 addr_info = socket.getaddrinfo(nombre_host, puerto)
                 print(addr_info)
             quieres_parar()
@@ -106,7 +109,9 @@ while parar == False:
             print("Comenzando el escaneo de puertos de nmap...")
             time.sleep(3)
             try:
+                # Inicializo el objeto escáner de nmap
                 nm = nmap.PortScanner()
+                # Lanzo el escaneo en el rango de puertos establecido
                 escaneo_puertos_nmap = nm.scan('127.0.0.1', '1-40043', timeout=50)
                 print("")
                 print(escaneo_puertos_nmap)
@@ -120,6 +125,7 @@ while parar == False:
         case 3:
             print("Testeando las distintas rutas de red con traceroute...")
             time.sleep(3)
+            # Ejecuto el comando de PowerShell para el mapeo de red
             test_traceroute = subprocess.run(["powershell.exe", "Test-NetConnection -TraceRoute"])
             print(test_traceroute)
             quieres_parar()
@@ -129,6 +135,7 @@ while parar == False:
         case 4:
             print("4.Descubriendo hosts en la red...")
             time.sleep(3)
+            # Obtengo las direcciones IP activas mediante comandos de red del sistema
             descubrir_ips = subprocess.run(["powershell.exe", "Get-NetIPAddress -AddressFamily IPv4"])
             print(descubrir_ips)
             quieres_parar()
@@ -139,6 +146,7 @@ while parar == False:
             print("Detectando sistemas operativos en red con nmap...")
             time.sleep(3)
             try:
+                # Instancio el escáner para realizar la detección de SO
                 nm = nmap.PortScanner()
                 escaneo_os = nm.scan('127.0.0.1', arguments='-O')
                 print("")
@@ -158,12 +166,15 @@ while parar == False:
             print("")
             
             try:
+                # Creo un socket de red para conectar al servicio
                 s = socket.socket()
                 s.settimeout(5)
                 s.connect((ip_objetivo, puerto_objetivo))
                 
+                # Envio una petición HTTP básica para forzar la respuesta del servicio
                 s.send(b'HEAD / HTTP/1.1\r\nHost: ' + ip_objetivo.encode() + b'\r\n\r\n')
                 
+                # Recojo la respuesta del banner
                 banner = s.recv(1024).decode(errors='ignore').strip()
                 if banner:
                     print(f"Banner para {ip_objetivo}:{puerto_objetivo} -> \n{banner}")
@@ -172,6 +183,7 @@ while parar == False:
             except socket.error as e:
                 print(f"Error de conexión con {ip_objetivo}:{puerto_objetivo} -> {e}")
             finally:
+                # Cierro la conexión del socket de manera segura
                 s.close()
                 
             quieres_parar()
@@ -179,4 +191,3 @@ while parar == False:
                 
         case _:
             print("Opción no válida. Vuelve a intentarlo.")
-
